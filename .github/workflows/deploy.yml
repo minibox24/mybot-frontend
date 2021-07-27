@@ -1,0 +1,19 @@
+name: Deploy Vue
+on: [push]
+jobs:
+  build_vue:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Deploy Vue
+      run: |
+            yarn
+            yarn build
+            cd dist
+            echo bot.minibox.xyz > CNAME
+            git config --global user.email "minibox724@gmail.com"
+            git config --global user.name "minibox24"
+            git init
+            git add -A
+            git commit -m ':rocket: Deploy'
+            git push -f https://minibox24:${{ secrets.GITHUB_TOKEN }}@github.com/minibox24/mybot-frontend.git pages

@@ -1,11 +1,11 @@
-name: Deploy Vue
+name: Deploy Page
 on: [push]
 jobs:
-  build_vue:
+  deploy_page:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Deploy Vue
+    - name: Deploy Page
       run: |
             yarn
             yarn build
@@ -16,4 +16,4 @@ jobs:
             git init
             git add -A
             git commit -m ':rocket: Deploy'
-            git push -f https://minibox24:${{ secrets.GITHUB_TOKEN }}@github.com/minibox24/mybot-frontend.git pages
+            git push -f https://minibox24:${{ secrets.GITHUB_TOKEN }}@github.com/minibox24/mybot-frontend.git master:page

@@ -81,6 +81,7 @@ export default {
 .content {
   margin-top: -10px;
   font-weight: lighter;
+  word-break: break-all;
   white-space: pre-line;
 }
 </style>

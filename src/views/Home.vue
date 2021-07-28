@@ -64,6 +64,10 @@
   background: #4752c4;
 }
 
+.btn:active {
+  background: #3c45a5;
+}
+
 @media (max-width: 900px) {
   .info {
     flex-direction: column;

@@ -3,7 +3,7 @@
     <span class="label" :style="`--width: ${width}rem`">{{ label }}</span>
     <textarea
       v-if="isTextArea"
-      class="input textarea"
+      class="input textarea scroll"
       :value="modelValue"
       @input="input"
     />

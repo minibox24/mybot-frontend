@@ -103,7 +103,7 @@ export default {
 .preview {
   background: #36393f;
   margin-top: 0.5rem;
-  max-height: 300px;
+  height: 200px;
   overflow: auto;
 }
 
@@ -152,6 +152,10 @@ export default {
 @media (max-width: 500px) {
   .header {
     margin-bottom: 2rem;
+  }
+
+  .title {
+    font-size: 2rem;
   }
 
   .user-name {

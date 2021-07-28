@@ -1,6 +1,11 @@
 <template>
   <div class="message">
-    <img class="avatar" alt="avatar" :src="avatar" @error="defaultImage" />
+    <img
+      class="avatar"
+      alt="avatar"
+      :src="avatar ?? 'https://cdn.discordapp.com/embed/avatars/0.png'"
+      @error="defaultImage"
+    />
     <div class="contents">
       <div class="header">
         <span class="name">{{ name ?? "마이봇" }}</span>
@@ -31,18 +36,18 @@ export default {
 .message {
   background: #36393f;
   display: flex;
-  align-items: center;
   padding: 1rem;
 }
 
 .contents {
-  margin-left: 0.5rem;
+  margin-left: 0.7rem;
 }
 
 .avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  margin-top: 5px;
 }
 
 .header {
@@ -76,5 +81,6 @@ export default {
 .content {
   margin-top: -10px;
   font-weight: lighter;
+  white-space: pre-line;
 }
 </style>

@@ -3,7 +3,7 @@
 </template>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;900&display=swap");
 
 body {
   margin: 0;
@@ -12,7 +12,7 @@ body {
 
 #app {
   height: 100vh;
-  background: #283033;
+  background: #2f3739;
   color: white;
 }
 </style>

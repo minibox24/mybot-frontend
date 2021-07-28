@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import CreateBot from "../views/CreateBot.vue";
+import CreateCommand from "../views/CreateCommand.vue";
 
 const routes = [
   {
@@ -12,6 +13,11 @@ const routes = [
     path: "/createBot",
     name: "CreateBot",
     component: CreateBot,
+  },
+  {
+    path: "/createCommand",
+    name: "CreateCommand",
+    component: CreateCommand,
   },
 ];
 

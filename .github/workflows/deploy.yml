@@ -4,16 +4,29 @@ jobs:
   deploy_page:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Deploy Page
-      run: |
-            yarn
-            yarn build
-            cd dist
-            echo bot.minibox.xyz > CNAME
-            git config --global user.email "minibox724@gmail.com"
-            git config --global user.name "minibox24"
-            git init
-            git add -A
-            git commit -m ':rocket: Deploy'
-            git push -f https://minibox24:${{ secrets.GITHUB_TOKEN }}@github.com/minibox24/mybot-frontend.git master:page
+      - uses: actions/checkout@master
+      - name: Set up Node.js
+        uses: actions/setup-node@master
+        with:
+          node-version: 14.x
+      - name: Cache node_modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{runner.OS}}-build-${{hashFiles('**/yarn.lock')}}
+          restore-keys: |
+            ${{ runner.OS }}-build-${{ runner.OS }}-
+      - name: Install dependencies
+        run: yarn install --prod --pure-lockfile
+      - name: Build
+        run: yarn run build
+        env:
+          NODE_ENV: production
+          CI: false
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          cname: bot.minibox.xyz
+          publish_dir: ./build
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          publish_branch: gh-pages

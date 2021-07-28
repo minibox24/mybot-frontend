@@ -14,5 +14,11 @@ body {
   height: 100vh;
   background: #2f3739;
   color: white;
+
+  user-select: none;
+}
+
+img {
+  -webkit-user-drag: none;
 }
 </style>

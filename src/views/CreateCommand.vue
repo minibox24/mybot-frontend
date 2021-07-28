@@ -122,6 +122,7 @@ export default {
   transition: 0.17s;
   border: none;
   outline: none;
+  cursor: pointer;
 }
 
 .button:hover {

@@ -22,13 +22,6 @@ img {
   -webkit-user-drag: none;
 }
 
-.scroll {
-  height: 100%;
-  background: #202225;
-  padding: 1rem;
-  overflow: auto;
-}
-
 .scroll::-webkit-scrollbar {
   width: 12px;
 }

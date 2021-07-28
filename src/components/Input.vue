@@ -1,13 +1,24 @@
 <template>
   <div class="input-wrapper">
-    <span class="label">{{ label }}</span>
-    <input class="input" :value="modelValue" @input="input" />
+    <span class="label" :style="`--width: ${width}rem`">{{ label }}</span>
+    <textarea
+      v-if="isTextArea"
+      class="input textarea"
+      :value="modelValue"
+      @input="input"
+    />
+    <input v-else class="input" :value="modelValue" @input="input" />
   </div>
 </template>
 
 <script>
 export default {
-  props: { label: String, modelValue: String },
+  props: {
+    label: String,
+    modelValue: String,
+    width: Number,
+    isTextArea: Boolean,
+  },
   methods: {
     input(value) {
       this.$emit("update:modelValue", value.target.value);
@@ -19,15 +30,19 @@ export default {
 <style scoped>
 .input-wrapper {
   display: flex;
-  align-items: center;
 }
 
 .label {
-  width: 20rem;
+  margin-top: 7px;
+  min-width: 5rem;
+  width: var(--width);
   font-size: 1.5rem;
 }
 
 .input {
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: lighter;
+
   margin-left: 0.5rem;
   padding: 10px;
   width: 100%;
@@ -39,6 +54,11 @@ export default {
   background: #2f3136;
   color: white;
   font-size: 1.2rem;
+}
+
+.textarea {
+  resize: none;
+  height: 120px;
 }
 
 .input:focus {

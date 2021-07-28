@@ -12,10 +12,10 @@
       </div>
     </div>
     <div class="inputs">
-      <Input label="아이디" v-model="id" />
-      <Input label="이름" v-model="name" />
-      <Input label="프리픽스" />
-      <Input label="프로필 사진 URL" v-model="avatar" />
+      <Input :width="20" label="아이디" v-model="id" />
+      <Input :width="20" label="이름" v-model="name" />
+      <Input :width="20" label="프리픽스" />
+      <Input :width="20" label="프로필 사진 URL" v-model="avatar" />
 
       <div class="preview">
         <span>미리보기</span>

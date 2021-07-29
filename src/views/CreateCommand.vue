@@ -1,5 +1,5 @@
 <template>
-  <div class="create-bot">
+  <div class="create-command">
     <div class="header">
       <span class="title">커맨드 만들기</span>
       <div class="user">
@@ -58,16 +58,17 @@ export default {
 </script>
 
 <style scoped>
-.create-bot {
+.create-command {
   display: flex;
   justify-content: center;
   flex-direction: column;
   padding: 0 20vw;
-  height: 100%;
+  min-height: 100vh;
 }
 
 .header {
   display: flex;
+  margin-top: 1rem;
   margin-bottom: 5rem;
 }
 
@@ -103,13 +104,14 @@ export default {
 .preview {
   background: #36393f;
   margin-top: 0.5rem;
-  height: 200px;
+  max-height: 160px;
   overflow: auto;
 }
 
 .button-container {
   display: flex;
   margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 
 .button {

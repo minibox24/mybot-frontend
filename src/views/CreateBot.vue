@@ -51,12 +51,13 @@ export default {
   justify-content: center;
   flex-direction: column;
   padding: 0 20vw;
-  height: 100%;
+  min-height: 100vh;
 }
 
 .header {
   display: flex;
   margin-bottom: 5rem;
+  margin-top: 1rem;
 }
 
 .title {
@@ -91,6 +92,7 @@ export default {
 .button-container {
   display: flex;
   margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 
 .button {

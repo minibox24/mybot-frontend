@@ -11,7 +11,7 @@ body {
 }
 
 #app {
-  height: 100vh;
+  min-height: 100vh;
   background: #2f3739;
   color: white;
 

@@ -9,7 +9,7 @@
     <div class="contents">
       <div class="header">
         <span class="name">{{ name ?? "마이봇" }}</span>
-        <span class="bot">봇</span>
+        <span v-if="!isUser" class="bot">봇</span>
         <span class="time">오늘 오전 12:00</span>
       </div>
       <span class="content">{{ content ?? "안녕하세요!" }}</span>
@@ -23,6 +23,7 @@ export default {
     name: String,
     avatar: String,
     content: String,
+    isUser: Boolean,
   },
   methods: {
     defaultImage(e) {

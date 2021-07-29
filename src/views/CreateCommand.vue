@@ -20,6 +20,7 @@
         <div class="preview">
           <Message
             name="User"
+            :isUser="true"
             :content="question ? bot.prefix + question : '!안녕'"
           />
           <Message

@@ -17,7 +17,7 @@
 
       <div class="preview-container">
         <span>미리보기</span>
-        <div class="preview scroll">
+        <div class="preview">
           <Message
             name="User"
             :content="question ? bot.prefix + question : '!안녕'"
@@ -106,6 +106,20 @@ export default {
   margin-top: 0.5rem;
   max-height: 160px;
   overflow: auto;
+}
+
+.preview::-webkit-scrollbar {
+  width: 12px;
+}
+
+.preview::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 12px 12px #202225;
+  border-radius: 12px;
+  border: solid 3px transparent;
+}
+
+.preview::-webkit-scrollbar-corner {
+  background: #36393f;
 }
 
 .button-container {

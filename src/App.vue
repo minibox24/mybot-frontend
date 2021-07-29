@@ -21,14 +21,4 @@ body {
 img {
   -webkit-user-drag: none;
 }
-
-.scroll::-webkit-scrollbar {
-  width: 12px;
-}
-
-.scroll::-webkit-scrollbar-thumb {
-  box-shadow: inset 0 0 12px 12px #202225;
-  border-radius: 12px;
-  border: solid 3px transparent;
-}
 </style>

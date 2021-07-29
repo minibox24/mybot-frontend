@@ -61,6 +61,20 @@ export default {
   height: 120px;
 }
 
+.textarea::-webkit-scrollbar {
+  width: 12px;
+}
+
+.textarea::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 12px 12px #202225;
+  border-radius: 12px;
+  border: solid 3px transparent;
+}
+
+.textarea::-webkit-scrollbar-corner {
+  background: #2f3136;
+}
+
 .input:focus {
   border-color: #5865f2;
 }

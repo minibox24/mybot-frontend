@@ -6,8 +6,17 @@
       class="input textarea scroll"
       :value="modelValue"
       @input="input"
+      :required="required"
     />
-    <input v-else class="input" :value="modelValue" @input="input" />
+    <input
+      v-else
+      class="input"
+      :value="modelValue"
+      @input="input"
+      :required="required"
+      :pattern="pattern"
+      :title="title"
+    />
   </div>
 </template>
 
@@ -18,6 +27,9 @@ export default {
     modelValue: String,
     width: Number,
     isTextArea: Boolean,
+    required: Boolean,
+    pattern: String,
+    title: String,
   },
   methods: {
     input(value) {

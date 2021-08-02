@@ -7,7 +7,7 @@
         <img class="user-avatar" alt="avatar" :src="user.avatar" />
       </div>
     </div>
-    <form class="inputs" v-on:submit.prevent="submit">
+    <form class="inputs" @submit.prevent="submit">
       <Input
         :width="20"
         label="이름"

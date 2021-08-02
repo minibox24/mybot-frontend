@@ -3,25 +3,24 @@
     <div class="header">
       <span class="title">커맨드 만들기</span>
       <div class="user">
-        <span class="user-name">Minibox#3332</span>
-        <img
-          class="user-avatar"
-          alt="avatar"
-          src="https://cdn.discordapp.com/avatars/310247242546151434/3bc87392aa69fe30a659f72151062458.png"
-        />
+        <span class="user-name">{{ user.name }}</span>
+        <img class="user-avatar" alt="avatar" :src="user.avatar" />
       </div>
     </div>
-    <div class="inputs">
+    <form class="inputs" @submit.prevent="submit">
       <Input label="질문" v-model="question" />
       <Input label="대답" v-model="answer" :isTextArea="true" />
+
+      <input ref="submit" type="submit" style="display: none" />
 
       <div class="preview-container">
         <span>미리보기</span>
         <div class="preview">
           <Message
-            name="User"
             :isUser="true"
-            :content="question ? bot.prefix + question : '!안녕'"
+            :name="user.name"
+            :avatar="user.avatar"
+            :content="bot.prefix + (question ?? '안녕')"
           />
           <Message
             style="margin-top: -1rem"
@@ -31,9 +30,9 @@
           />
         </div>
       </div>
-    </div>
+    </form>
     <div class="button-container">
-      <span class="button">만들기</span>
+      <span class="button" @click="submitButton">만들기</span>
     </div>
   </div>
 </template>
@@ -41,6 +40,7 @@
 <script>
 import Input from "../components/Input.vue";
 import Message from "../components/Message.vue";
+import axios from "axios";
 
 export default {
   components: { Input, Message },
@@ -48,12 +48,54 @@ export default {
     return {
       question: null,
       answer: null,
+      user: {
+        name: "",
+        avatar: "https://cdn.discordapp.com/embed/avatars/0.png",
+      },
       bot: {
-        name: "미니봇",
-        avatar: "https://fs.minibox.xyz/minibot.png",
+        name: "",
+        avatar: "https://cdn.discordapp.com/embed/avatars/0.png",
         prefix: "!",
       },
     };
+  },
+  async mounted() {
+    const token = this.$route.query.token;
+
+    if (!token) {
+      return this.$router.push("/");
+    }
+
+    const { status, data } = await axios.get(`/createCommand?token=${token}`);
+
+    if (status !== 200) {
+      return this.$router.push("/");
+    }
+
+    this.user.name = data.userName;
+    this.user.avatar = data.userAvatar;
+    this.bot.name = data.botName;
+    this.bot.avatar = data.botAvatar;
+    this.bot.prefix = data.botPrefix;
+  },
+  methods: {
+    async submit() {
+      const { status } = await axios
+        .post(`/createCommand?token=${this.$route.query.token}`, {
+          question: this.question,
+          answer: this.answer,
+        })
+        .catch(() => {
+          alert("알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+        });
+
+      if (status === 200) {
+        this.$router.push("/done");
+      }
+    },
+    submitButton() {
+      this.$refs.submit.click();
+    },
   },
 };
 </script>

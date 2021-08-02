@@ -4,7 +4,6 @@ import CreateBot from "../views/CreateBot.vue";
 import CreateCommand from "../views/CreateCommand.vue";
 import Done from "../views/Done.vue";
 
-
 const routes = [
   {
     path: "/",

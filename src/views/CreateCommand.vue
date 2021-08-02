@@ -66,17 +66,19 @@ export default {
       return this.$router.push("/");
     }
 
-    const { status, data } = await axios.get(`/createCommand?token=${token}`);
+    const { status, data } = await axios
+      .get(`/createCommand?token=${token}`)
+      .catch(() => {
+        this.$router.push("/");
+      });
 
-    if (status !== 200) {
-      return this.$router.push("/");
+    if (status === 200) {
+      this.user.name = data.userName;
+      this.user.avatar = data.userAvatar;
+      this.bot.name = data.botName;
+      this.bot.avatar = data.botAvatar;
+      this.bot.prefix = data.botPrefix;
     }
-
-    this.user.name = data.userName;
-    this.user.avatar = data.userAvatar;
-    this.bot.name = data.botName;
-    this.bot.avatar = data.botAvatar;
-    this.bot.prefix = data.botPrefix;
   },
   methods: {
     async submit() {

@@ -71,14 +71,16 @@ export default {
       return this.$router.push("/");
     }
 
-    const { status, data } = await axios.get(`/createBot?token=${token}`);
+    const { status, data } = await axios
+      .get(`/createBot?token=${token}`)
+      .catch(() => {
+        this.$router.push("/");
+      });
 
-    if (status !== 200) {
-      return this.$router.push("/");
+    if (status === 200) {
+      this.user.name = data.userName;
+      this.user.avatar = data.userAvatar;
     }
-
-    this.user.name = data.userName;
-    this.user.avatar = data.userAvatar;
   },
   methods: {
     async submit() {

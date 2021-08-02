@@ -195,13 +195,13 @@ export default {
 }
 
 @media (max-width: 1100px) {
-  .create-bot {
+  .create-command {
     padding: 0 10vw;
   }
 }
 
 @media (max-width: 700px) {
-  .create-bot {
+  .create-command {
     padding: 0 30px;
   }
 

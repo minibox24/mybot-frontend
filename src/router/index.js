@@ -3,6 +3,7 @@ import Home from "../views/Home.vue";
 import CreateBot from "../views/CreateBot.vue";
 import CreateCommand from "../views/CreateCommand.vue";
 import Done from "../views/Done.vue";
+import Draw from "../views/Draw.vue";
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: "/done",
     name: "Done",
     component: Done,
+  },
+  {
+    path: "/draw",
+    name: "Draw",
+    component: Draw,
   },
 ];
 

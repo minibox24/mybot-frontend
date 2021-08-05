@@ -3,12 +3,8 @@
     <div class="header">
       <span class="title">그림판</span>
       <div class="user">
-        <span class="user-name">yejun</span>
-        <img
-          class="user-avatar"
-          alt="avatar"
-          src="https://cdn.discordapp.com/avatars/310247242546151434/3bc87392aa69fe30a659f72151062458.png"
-        />
+        <span class="user-name">{{ user.name }}</span>
+        <img class="user-avatar" alt="avatar" :src="user.avatar" />
       </div>
     </div>
     <div class="control">
@@ -57,13 +53,13 @@
         <span class="button blue" @click="undo">되돌리기</span>
       </div>
     </div>
-    <span class="button green done" @click="submitButton">완성</span>
+    <span class="button green done" @click="done">완성</span>
   </div>
 </template>
 
 <script>
 import { ColorPicker } from "vue-color-kit";
-import "vue-color-kit/dist/vue-color-kit.css";
+import axios from "axios";
 
 export default {
   components: { ColorPicker },
@@ -76,6 +72,10 @@ export default {
       opened: false,
       painting: false,
       history: [],
+      user: {
+        name: "",
+        avatar: "https://cdn.discordapp.com/embed/avatars/0.png",
+      },
     };
   },
   methods: {
@@ -195,6 +195,21 @@ export default {
         this.canvas.height
       );
     },
+    async done() {
+      const { status } = await axios
+        .post(`/paint?token=${this.$route.query.token}`, {
+          image: this.canvas
+            .toDataURL()
+            .replace(/^data:image\/\w+;base64,/, ""),
+        })
+        .catch(() => {
+          alert("알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+        });
+
+      if (status === 200) {
+        this.$router.push("/done");
+      }
+    },
   },
   watch: {
     color(value) {
@@ -204,7 +219,13 @@ export default {
       this.ctx.lineWidth = value;
     },
   },
-  mounted() {
+  async mounted() {
+    const token = this.$route.query.token;
+
+    if (!token) {
+      return this.$router.push("/");
+    }
+
     this.canvas = this.$refs.canvas;
     this.ctx = this.canvas.getContext("2d");
 
@@ -213,9 +234,22 @@ export default {
     this.history.push(
       this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
     );
+
+    const { status, data } = await axios
+      .get(`/paint?token=${token}`)
+      .catch(() => {
+        this.$router.push("/");
+      });
+
+    if (status === 200) {
+      this.user.name = data.userName;
+      this.user.avatar = data.userAvatar;
+    }
   },
 };
 </script>
+
+<style src="vue-color-kit/dist/vue-color-kit.css"></style>
 
 <style scoped>
 .draw {

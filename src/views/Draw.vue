@@ -59,6 +59,7 @@
 
 <script>
 import { ColorPicker } from "vue-color-kit";
+import "vue-color-kit/dist/vue-color-kit.css";
 import axios from "axios";
 
 export default {
@@ -248,8 +249,6 @@ export default {
   },
 };
 </script>
-
-<style src="vue-color-kit/dist/vue-color-kit.css"></style>
 
 <style scoped>
 .draw {

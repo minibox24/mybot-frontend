@@ -41,7 +41,7 @@
         <input
           type="range"
           class="track"
-          :style="`--gradient: linear-gradient(to right, hsl(235, 85.6%, 64.7%) 0%, hsl(235, 85.6%, 64.7%) ${
+          :style="`--gradient: linear-gradient(to right, #5865f2 0%, #5865f2 ${
             (thickness / 200) * 100
           }%, #4f545c ${(thickness / 200) * 100}%, #4f545c 100%)`"
           v-model="thickness"
@@ -52,7 +52,7 @@
       </div>
       <div class="buttons">
         <span class="button red" @click="submitButton">모두 지우기</span>
-        <span class="button blue" @click="submitButton">되돌리기</span>
+        <span class="button blue" @click="undo">되돌리기</span>
       </div>
     </div>
     <span class="button green done" @click="submitButton">완성</span>
@@ -77,6 +77,7 @@ export default {
         width: null,
         height: null,
       },
+      history: [],
     };
   },
   methods: {
@@ -103,6 +104,10 @@ export default {
       this.ctx.closePath();
 
       this.painting = false;
+
+      this.history.push(
+        this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
+      );
     },
     canvasMouseMove({ clientX, clientY }) {
       if (!this.painting) return;
@@ -190,6 +195,18 @@ export default {
       };
 
       image.src = this.canvas.toDataURL();
+    },
+    undo() {
+      this.ctx.putImageData(
+        this.history[this.history.length - 1],
+        0,
+        0,
+        0,
+        0,
+        this.canvas.width,
+        this.canvas.height
+      );
+      this.history.pop();
     },
   },
   watch: {

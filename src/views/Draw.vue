@@ -101,11 +101,13 @@ export default {
     canvasMouseUp() {
       this.ctx.closePath();
 
-      this.painting = false;
+      if (this.painting) {
+        this.history.push(
+          this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
+        );
+      }
 
-      this.history.push(
-        this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
-      );
+      this.painting = false;
     },
     canvasMouseMove({ clientX, clientY }) {
       if (!this.painting) return;
@@ -179,8 +181,12 @@ export default {
       this.resetCanvas();
     },
     undo() {
+      const imageData = this.history.pop();
+
+      if (!imageData) return;
+
       this.ctx.putImageData(
-        this.history[this.history.length - 1],
+        imageData,
         0,
         0,
         0,
@@ -188,7 +194,6 @@ export default {
         this.canvas.width,
         this.canvas.height
       );
-      this.history.pop();
     },
   },
   watch: {
@@ -204,6 +209,10 @@ export default {
     this.ctx = this.canvas.getContext("2d");
 
     this.resetCanvas();
+
+    this.history.push(
+      this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
+    );
   },
 };
 </script>

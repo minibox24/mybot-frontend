@@ -15,6 +15,8 @@
       <canvas
         ref="canvas"
         id="canvas"
+        width="720"
+        height="480"
         @mousedown="canvasMouseDown"
         @mouseup="canvasMouseUp"
         @mouseleave="canvasMouseUp"
@@ -73,10 +75,6 @@ export default {
       thickness: 2,
       opened: false,
       painting: false,
-      oldSize: {
-        width: null,
-        height: null,
-      },
       history: [],
     };
   },
@@ -149,23 +147,17 @@ export default {
       this.canvas.dispatchEvent(mouseEvent);
     },
     getPosition(clientX, clientY) {
-      const { left, top } = this.canvas.getBoundingClientRect();
+      const { left, top, width, height } = this.canvas.getBoundingClientRect();
+
+      const scaleX = this.canvas.width / width;
+      const scaleY = this.canvas.height / height;
 
       return {
-        x: clientX - left,
-        y: clientY - top,
+        x: (clientX - left) * scaleX,
+        y: (clientY - top) * scaleY,
       };
     },
     resetCanvas() {
-      this.oldSize = {
-        width: this.$refs.canvas.width,
-        height: this.$refs.canvas.height,
-      };
-
-      const rect = this.$refs.canvas.getBoundingClientRect();
-      this.$refs.canvas.width = rect.width;
-      this.$refs.canvas.height = rect.height;
-
       this.ctx.fillStyle = "white";
       this.ctx.fillRect(
         0,
@@ -179,22 +171,6 @@ export default {
 
       this.ctx.lineJoin = "round";
       this.ctx.lineCap = "round";
-    },
-    resizeCanvas() {
-      const image = new Image();
-
-      image.onload = () => {
-        this.resetCanvas();
-        this.ctx.drawImage(
-          image,
-          0,
-          0,
-          this.$refs.canvas.width,
-          this.$refs.canvas.height
-        );
-      };
-
-      image.src = this.canvas.toDataURL();
     },
     clear() {
       this.history.push(
@@ -228,11 +204,6 @@ export default {
     this.ctx = this.canvas.getContext("2d");
 
     this.resetCanvas();
-
-    window.addEventListener("resize", this.resizeCanvas);
-  },
-  beforeUnmount() {
-    window.removeEventListener("resize", this.resizeCanvas);
   },
 };
 </script>

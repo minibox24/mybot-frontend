@@ -40,6 +40,9 @@
         <input
           type="range"
           class="track"
+          :style="`--gradient: linear-gradient(to right, hsl(235, 85.6%, 64.7%) 0%, hsl(235, 85.6%, 64.7%) ${
+            (thickness / 200) * 100
+          }%, #4f545c ${(thickness / 200) * 100}%, #4f545c 100%)`"
           v-model="thickness"
           min="1"
           max="200"
@@ -302,11 +305,17 @@ export default {
   border: 0;
   border-radius: 4px;
   box-shadow: none;
-  background-color: hsl(235, 85.6%, 64.7%);
+  /*background-color: hsl(235, 85.6%, 64.7%);*/
+  background-image: var(--gradient);
+}
+
+.track:focus::-webkit-slider-runnable-track {
+  background-image: var(--gradient);
 }
 
 .track::-webkit-slider-thumb {
   -webkit-appearance: none;
+  margin-top: -8px;
   border: 1px solid #dcddde;
   box-shadow: 0 3px 1px 0 rgb(0 0 0 / 5%), 0 2px 2px 0 rgb(0 0 0 / 10%),
     0 3px 3px 0 rgb(0 0 0 / 5%);
@@ -315,20 +324,19 @@ export default {
   border-radius: 3px;
   background-color: #fff;
   cursor: ew-resize;
-  margin-top: -8px;
-}
-
-.track:focus::-webkit-slider-runnable-track {
-  background-color: hsl(235, 85.6%, 64.7%);
 }
 
 .track::-moz-range-track {
+  border: 0;
+  box-shadow: none;
+  background-color: #4f545c;
+}
+
+.track::-moz-range-track,
+.track::-moz-range-progress {
   width: 100%;
   height: 8px;
-  border: 0;
   border-radius: 4px;
-  box-shadow: none;
-  background-color: hsl(235, 85.6%, 64.7%);
 }
 
 .track::-moz-range-thumb {
@@ -340,6 +348,10 @@ export default {
   border-radius: 3px;
   background-color: #fff;
   cursor: ew-resize;
+}
+
+.track::-moz-range-progress {
+  background-color: hsl(235, 85.6%, 64.7%);
 }
 
 .button {

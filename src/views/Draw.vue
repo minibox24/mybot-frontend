@@ -51,7 +51,7 @@
         />
       </div>
       <div class="buttons">
-        <span class="button red" @click="submitButton">모두 지우기</span>
+        <span class="button red" @click="clear">모두 지우기</span>
         <span class="button blue" @click="undo">되돌리기</span>
       </div>
     </div>
@@ -195,6 +195,12 @@ export default {
       };
 
       image.src = this.canvas.toDataURL();
+    },
+    clear() {
+      this.history.push(
+        this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
+      );
+      this.resetCanvas();
     },
     undo() {
       this.ctx.putImageData(

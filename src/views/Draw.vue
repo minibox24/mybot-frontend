@@ -73,6 +73,7 @@ export default {
       opened: false,
       painting: false,
       history: [],
+      processing: false,
       user: {
         name: "",
         avatar: "https://cdn.discordapp.com/embed/avatars/0.png",
@@ -197,6 +198,9 @@ export default {
       );
     },
     async done() {
+      if (this.processing) return;
+
+      this.processing = true;
       const { status } = await axios
         .post(`/paint?token=${this.$route.query.token}`, {
           image: this.canvas
@@ -205,6 +209,7 @@ export default {
         })
         .catch(() => {
           alert("알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+          this.processing = false;
         });
 
       if (status === 200) {

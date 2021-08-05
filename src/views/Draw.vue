@@ -30,6 +30,7 @@
           v-if="opened"
           class="picker"
           theme="dark"
+          :color="color"
           @changeColor="changeColor"
         />
         <div

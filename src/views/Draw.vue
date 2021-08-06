@@ -90,7 +90,6 @@ export default {
       thickness: 2,
       opened: false,
       painting: false,
-      history: [],
       processing: false,
       user: {
         name: "",
@@ -129,12 +128,6 @@ export default {
     },
     canvasMouseUp() {
       this.ctx.closePath();
-
-      if (this.painting) {
-        this.history.push(
-          this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
-        );
-      }
 
       this.painting = false;
     },
@@ -229,25 +222,11 @@ export default {
       }
     },
     clear() {
-      this.history.push(
-        this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
-      );
       this.resetCanvas();
     },
     undo() {
-      const imageData = this.history.pop();
-
-      if (!imageData) return;
-
-      this.ctx.putImageData(
-        imageData,
-        0,
-        0,
-        0,
-        0,
-        this.canvas.width,
-        this.canvas.height
-      );
+      this.paths.pop();
+      this.refresh();
     },
     async done() {
       if (this.processing) return;
@@ -310,10 +289,6 @@ export default {
     this.ctx = this.canvas.getContext("2d");
 
     this.resetCanvas();
-
-    this.history.push(
-      this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
-    );
 
     const { status, data } = await axios
       .get(`/paint?token=${token}`)

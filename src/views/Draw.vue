@@ -70,6 +70,7 @@
       <div class="buttons">
         <span class="button red" @click="clear">모두 지우기</span>
         <span class="button blue" @click="undo">되돌리기</span>
+        <span class="button blue" @click="redo">다시 실행</span>
       </div>
     </div>
     <span class="button green done" @click="done">완성</span>
@@ -102,6 +103,7 @@ export default {
         y: 0,
       },
       paths: [],
+      undoList: [],
     };
   },
   methods: {
@@ -228,7 +230,13 @@ export default {
       this.refresh();
     },
     undo() {
-      this.paths.pop();
+      if (this.paths.length < 1) return;
+      this.undoList.push(this.paths.pop());
+      this.refresh();
+    },
+    redo() {
+      if (this.undoList.length < 1) return;
+      this.paths.push(this.undoList.pop());
       this.refresh();
     },
     async done() {

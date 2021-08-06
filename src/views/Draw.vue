@@ -13,6 +13,7 @@
         id="canvas"
         width="720"
         height="480"
+        :style="`z-index: ${suck.ing ? 50 : ''}`"
         @mousedown="canvasMouseDown"
         @mouseup="canvasMouseUp"
         @mouseleave="canvasMouseUp"
@@ -21,9 +22,16 @@
         @touchend="canvasTouchEnd"
         @touchcancel="canvasTouchEnd"
         @touchmove="canvasTouchMove"
+        @click="suckerClick"
+        @touch="suckerClick"
       />
       <div class="buttons">
-        <div v-if="opened" class="picker-bg" @click="closePicker" />
+        <div v-if="opened || suck.ing" class="picker-bg" @click="closePicker" />
+        <div
+          v-if="suck.ing"
+          class="color-bubble"
+          :style="`left: ${suck.x}px; top: ${suck.y}px; background: ${suck.color}`"
+        />
         <ColorPicker
           v-if="opened"
           class="picker"
@@ -33,9 +41,20 @@
         />
         <div
           class="color"
-          :style="`--color: ${color}`"
+          :style="`--color: ${color}; z-index: ${suck.ing ? 50 : ''}`"
           @click="openColorPicker"
         />
+        <svg
+          @click="openSucker"
+          :class="`sucker ${suck.ing ? 'active' : ''}`"
+          :style="`z-index: ${suck.ing ? 50 : ''}`"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="-8 -8 40 40"
+        >
+          <path
+            d="M13.1,8.2l5.6,5.6c0.4,0.4,0.5,1.1,0.1,1.5s-1.1,0.5-1.5,0.1c0,0-0.1,0-0.1-0.1l-1.4-1.4l-7.7,7.7C7.9,21.9,7.6,22,7.3,22H3.1C2.5,22,2,21.5,2,20.9l0,0v-4.2c0-0.3,0.1-0.6,0.3-0.8l5.8-5.8C8.5,9.7,9.2,9.6,9.7,10s0.5,1.1,0.1,1.5c0,0,0,0.1-0.1,0.1l-5.5,5.5v2.7h2.7l7.4-7.4L8.7,6.8c-0.5-0.4-0.5-1-0.1-1.5s1.1-0.5,1.5-0.1c0,0,0.1,0,0.1,0.1l1.4,1.4l3.5-3.5c1.6-1.6,4.1-1.6,5.8-0.1c1.6,1.6,1.6,4.1,0.1,5.8L20.9,9l-3.6,3.6c-0.4,0.4-1.1,0.5-1.5,0.1"
+          ></path>
+        </svg>
         <input
           type="range"
           class="track"
@@ -77,6 +96,12 @@ export default {
         name: "",
         avatar: "https://cdn.discordapp.com/embed/avatars/0.png",
       },
+      suck: {
+        ing: false,
+        color: "rgba(0, 0, 0, 1)",
+        x: 0,
+        y: 0,
+      },
     };
   },
   methods: {
@@ -85,6 +110,7 @@ export default {
     },
     closePicker() {
       this.opened = false;
+      this.suck.ing = false;
     },
     changeColor(color) {
       this.color = `rgba(${color.rgba.r}, ${color.rgba.g}, ${color.rgba.b}, ${color.rgba.a})`;
@@ -93,6 +119,8 @@ export default {
       this.ctx.lineWidth = event.target.value;
     },
     canvasMouseDown({ clientX, clientY }) {
+      if (this.suck.ing) return;
+
       const { x, y } = this.getPosition(clientX, clientY);
 
       this.ctx.beginPath();
@@ -111,6 +139,8 @@ export default {
       this.painting = false;
     },
     canvasMouseMove({ clientX, clientY }) {
+      this.suckerMove({ clientX, clientY });
+
       if (!this.painting) return;
 
       const { x, y } = this.getPosition(clientX, clientY);
@@ -129,6 +159,7 @@ export default {
       });
 
       this.canvas.dispatchEvent(mouseEvent);
+      this.suckerClick({ clientX, clientY });
     },
     canvasTouchEnd(event) {
       event.preventDefault();
@@ -214,6 +245,28 @@ export default {
       if (status === 200) {
         this.$router.push("/done");
       }
+    },
+    suckerMove({ clientX, clientY }) {
+      if (this.suck.ing) {
+        this.suck.x = clientX + 10;
+        this.suck.y = clientY - 30;
+
+        const { x, y } = this.getPosition(clientX, clientY);
+        const rgb = this.ctx.getImageData(x, y, 1, 1).data;
+
+        this.suck.color = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 1)`;
+      }
+    },
+    suckerClick({ clientX, clientY }) {
+      if (this.suck.ing) {
+        const { x, y } = this.getPosition(clientX, clientY);
+        const rgb = this.ctx.getImageData(x, y, 1, 1).data;
+
+        this.color = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 1)`;
+      }
+    },
+    openSucker() {
+      this.suck.ing = !this.suck.ing;
     },
   },
   watch: {
@@ -305,6 +358,7 @@ export default {
 .buttons {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-top: 1rem;
 }
 
@@ -319,14 +373,31 @@ export default {
 .picker {
   position: absolute;
   top: calc(50% - 338px / 2);
+  z-index: 80;
 }
 
 .color {
   width: 50px;
+  height: 25px;
   border-radius: 1rem;
   background: var(--color);
   border: 1px solid black;
+  cursor: pointer;
+}
+
+.sucker {
+  margin-left: 0.1rem;
   margin-right: 0.5rem;
+}
+
+.color-bubble {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: rgb(0 0 0 / 16%) 0px 0px 8px 0px;
+  z-index: 100;
 }
 
 .track {

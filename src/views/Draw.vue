@@ -304,7 +304,7 @@ export default {
     const { status, data } = await axios
       .get(`/paint?token=${token}`)
       .catch(() => {
-        // this.$router.push("/");
+        this.$router.push("/");
       });
 
     if (status === 200) {

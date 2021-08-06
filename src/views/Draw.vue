@@ -125,7 +125,7 @@ export default {
       const { x, y } = this.getPosition(clientX, clientY);
 
       this.painting = true;
-      this.paths.push([{ x, y }]);
+      this.paths.push([{ x, y, color: this.color, thickness: this.thickness }]);
     },
     canvasMouseUp() {
       this.ctx.closePath();
@@ -143,27 +143,14 @@ export default {
 
       if (!this.painting) return;
 
-      const pos = this.getPosition(clientX, clientY);
-      this.paths[this.paths.length - 1].push(pos);
+      const { x, y } = this.getPosition(clientX, clientY);
+      this.paths[this.paths.length - 1].push({
+        x,
+        y,
+        color: this.color,
+        thickness: this.thickness,
+      });
       this.refresh();
-    },
-    refresh() {
-      this.resetCanvas();
-
-      for (let i = 0; i < this.paths.length; ++i) {
-        const path = this.paths[i];
-
-        if (path.length < 1) continue;
-
-        this.ctx.beginPath();
-        this.ctx.moveTo(path[0].x, path[0].y);
-
-        for (let j = 1; j < path.length; ++j) {
-          this.ctx.lineTo(path[j].x, path[j].y);
-        }
-
-        this.ctx.stroke();
-      }
     },
     canvasTouchStart(event) {
       event.preventDefault();
@@ -217,11 +204,29 @@ export default {
         this.$refs.canvas.height
       );
 
-      this.ctx.strokeStyle = this.color;
-      this.ctx.lineWidth = this.thickness;
-
       this.ctx.lineJoin = "round";
       this.ctx.lineCap = "round";
+    },
+    refresh() {
+      this.resetCanvas();
+
+      for (let i = 0; i < this.paths.length; ++i) {
+        const path = this.paths[i];
+
+        if (path.length < 1) continue;
+
+        this.ctx.strokeStyle = path[0].color;
+        this.ctx.lineWidth = path[0].thickness;
+
+        this.ctx.beginPath();
+        this.ctx.moveTo(path[0].x, path[0].y);
+
+        for (let j = 1; j < path.length; ++j) {
+          this.ctx.lineTo(path[j].x, path[j].y);
+        }
+
+        this.ctx.stroke();
+      }
     },
     clear() {
       this.history.push(

@@ -102,6 +102,7 @@ export default {
         x: 0,
         y: 0,
       },
+      paths: [],
     };
   },
   methods: {
@@ -123,9 +124,8 @@ export default {
 
       const { x, y } = this.getPosition(clientX, clientY);
 
-      this.ctx.beginPath();
-      this.ctx.moveTo(x, y);
       this.painting = true;
+      this.paths.push([{ x, y }]);
     },
     canvasMouseUp() {
       this.ctx.closePath();
@@ -143,10 +143,27 @@ export default {
 
       if (!this.painting) return;
 
-      const { x, y } = this.getPosition(clientX, clientY);
+      const pos = this.getPosition(clientX, clientY);
+      this.paths[this.paths.length - 1].push(pos);
+      this.refresh();
+    },
+    refresh() {
+      this.resetCanvas();
 
-      this.ctx.lineTo(x, y);
-      this.ctx.stroke();
+      for (let i = 0; i < this.paths.length; ++i) {
+        const path = this.paths[i];
+
+        if (path.length < 1) continue;
+
+        this.ctx.beginPath();
+        this.ctx.moveTo(path[0].x, path[0].y);
+
+        for (let j = 1; j < path.length; ++j) {
+          this.ctx.lineTo(path[j].x, path[j].y);
+        }
+
+        this.ctx.stroke();
+      }
     },
     canvasTouchStart(event) {
       event.preventDefault();
@@ -281,7 +298,7 @@ export default {
     const token = this.$route.query.token;
 
     if (!token) {
-      return this.$router.push("/");
+      // return this.$router.push("/");
     }
 
     this.canvas = this.$refs.canvas;
@@ -296,7 +313,7 @@ export default {
     const { status, data } = await axios
       .get(`/paint?token=${token}`)
       .catch(() => {
-        this.$router.push("/");
+        // this.$router.push("/");
       });
 
     if (status === 200) {

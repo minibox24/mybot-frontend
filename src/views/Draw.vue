@@ -214,7 +214,7 @@ export default {
         this.ctx.beginPath();
         this.ctx.moveTo(path[0].x, path[0].y);
 
-        for (let j = 1; j < path.length; ++j) {
+        for (let j = 0; j < path.length; ++j) {
           this.ctx.lineTo(path[j].x, path[j].y);
         }
 
@@ -222,7 +222,10 @@ export default {
       }
     },
     clear() {
-      this.resetCanvas();
+      this.paths.push([
+        { x: 0, y: 0, color: "rgba(255, 255, 255, 1)", thickness: 100000 },
+      ]);
+      this.refresh();
     },
     undo() {
       this.paths.pop();

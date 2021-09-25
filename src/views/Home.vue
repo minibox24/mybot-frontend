@@ -14,6 +14,7 @@
       <a class="btn" href="https://minibox.xyz/vote" target="blank"
         >하트 누르기</a
       >
+      <router-link class="btn" to="/graph">파이 그래프</router-link>
     </div>
   </div>
 </template>

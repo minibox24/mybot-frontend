@@ -7,6 +7,15 @@
       <span class="now">{{ now }}원</span>
       <span class="next">{{ next }}초 후 가격 변동</span>
     </div>
+    <div class="select-container">
+      <select v-model="selected">
+        <option value="1h">1시간</option>
+        <option value="3h">3시간</option>
+        <option value="6h">6시간</option>
+        <option value="12h">12시간</option>
+        <option value="1d">1일</option>
+      </select>
+    </div>
   </div>
 </template>
 
@@ -21,6 +30,7 @@ export default {
       next: 0,
       history: [],
       loop: null,
+      selected: "1h",
     };
   },
   async mounted() {
@@ -68,11 +78,40 @@ export default {
   },
   methods: {
     async reload() {
-      const { data } = await axios.get(`/piePrice`);
+      let limit = 60;
+
+      switch (this.selected) {
+        case "1h":
+          limit = 60;
+          break;
+        case "3h":
+          limit = 180;
+          break;
+        case "6h":
+          limit = 360;
+          break;
+        case "12h":
+          limit = 720;
+          break;
+        case "1d":
+          limit = 1440;
+          break;
+      }
+
+      const { data } = await axios.get(`/piePrice?limit=${limit}`);
 
       this.next = data.next;
       this.history = data.history;
       this.now = data.history[data.history.length - 1][1];
+    },
+  },
+  watch: {
+    async selected() {
+      await this.reload();
+
+      this.chart.data.labels = this.history.map((x) => x[0]);
+      this.chart.data.datasets[0].data = this.history.map((x) => x[1]);
+      this.chart.update();
     },
   },
 };
@@ -100,6 +139,16 @@ export default {
 }
 
 .next {
+  margin-left: auto;
+}
+
+.select-container {
+  margin-top: 0.5rem;
+  display: flex;
+  width: 75%;
+}
+
+select {
   margin-left: auto;
 }
 

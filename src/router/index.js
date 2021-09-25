@@ -4,6 +4,7 @@ import CreateBot from "../views/CreateBot.vue";
 import CreateCommand from "../views/CreateCommand.vue";
 import Done from "../views/Done.vue";
 import Draw from "../views/Draw.vue";
+import Graph from "../views/Graph.vue";
 
 const routes = [
   {
@@ -31,6 +32,11 @@ const routes = [
     name: "Draw",
     component: Draw,
   },
+  {
+    path: "/graph",
+    name: "Graph",
+    component: Graph,
+  }
 ];
 
 const router = createRouter({

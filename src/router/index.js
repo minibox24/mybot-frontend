@@ -36,7 +36,7 @@ const routes = [
     path: "/graph",
     name: "Graph",
     component: Graph,
-  }
+  },
 ];
 
 const router = createRouter({

@@ -16,6 +16,9 @@
       >
       <router-link class="btn" to="/graph">파이 그래프</router-link>
     </div>
+    <div class="footer">
+      <router-link to="/privacy">개인정보 처리방침</router-link>
+    </div>
   </div>
 </template>
 
@@ -31,6 +34,7 @@
 .info {
   display: flex;
   align-items: center;
+  margin-top: auto;
 }
 
 .avatar {
@@ -67,6 +71,16 @@
 
 .btn:active {
   background: #3c45a5;
+}
+
+.footer {
+  margin-top: auto;
+  margin-bottom: 10px;
+}
+
+.footer > a {
+  color: gray;
+  text-decoration: none;
 }
 
 @media (max-width: 900px) {

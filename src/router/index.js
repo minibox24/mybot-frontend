@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
+
 import Home from "../views/Home.vue";
 import CreateBot from "../views/CreateBot.vue";
 import CreateCommand from "../views/CreateCommand.vue";
 import Done from "../views/Done.vue";
 import Draw from "../views/Draw.vue";
 import Graph from "../views/Graph.vue";
+import Privacy from "../views/Privacy.vue";
 
 const routes = [
   {
@@ -36,6 +38,11 @@ const routes = [
     path: "/graph",
     name: "Graph",
     component: Graph,
+  },
+  {
+    path: "/privacy",
+    name: "Privacy",
+    component: Privacy,
   },
 ];
 

@@ -63,7 +63,7 @@
           }%, #4f545c ${(thickness / 200) * 100}%, #4f545c 100%)`"
           v-model="thickness"
           min="1"
-          max="200"
+          max="100"
           step="1"
         />
       </div>

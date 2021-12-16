@@ -59,8 +59,8 @@
           type="range"
           class="track"
           :style="`--gradient: linear-gradient(to right, #5865f2 0%, #5865f2 ${
-            (thickness / 200) * 100
-          }%, #4f545c ${(thickness / 200) * 100}%, #4f545c 100%)`"
+            (thickness / 100) * 100
+          }%, #4f545c ${(thickness / 100) * 100}%, #4f545c 100%)`"
           v-model="thickness"
           min="1"
           max="100"

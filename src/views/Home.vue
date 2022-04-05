@@ -11,9 +11,6 @@
       <a class="btn" href="https://discord.gg/pbd2xXJ" target="blank"
         >서포트 서버</a
       >
-      <a class="btn" href="https://minibox.xyz/vote" target="blank"
-        >하트 누르기</a
-      >
       <router-link class="btn" to="/graph">파이 그래프</router-link>
     </div>
     <div class="footer">
